@@ -1,35 +1,39 @@
 # LeetCode POTD - 2026-08-19
-# 3471. Find the Largest Almost Missing Integer
-# Approach: Hashmap
+# 1386. Cinema Seat Allocation
+# Approach: Hashtable
 
 class Solution:
-    def largestInteger(self, nums: List[int], k: int) -> int:
-        n = len(nums)
-        max_no = -1
+    def maxNumberOfFamilies(self, n: int, reservedSeats: List[List[int]]) -> int:
+        
+        rows = {}
 
-        if k == 1:
-            fq = {}
+        for r, c in reservedSeats:
+            if r not in rows:
+                rows[r] = set()
 
-            for num in nums:
-                fq[num] = fq.get(num, 0) + 1
-
-            max_no = -1
-
-            for num, freq in fq.items():
-                if freq == 1:
-                    max_no = max(max_no, num)
-
-            return max_no
+            rows[r].add(c)
             
-        if k == n:
-            return max(nums)
-
-        if nums.count(nums[0]) == 1:
-            max_no = max(max_no, nums[0])
-
-        if nums.count(nums[-1]) == 1:
-            max_no = max(max_no, nums[-1])
-
-        return max_no
+        ans = (n - len(rows)) * 2
         
+        for reserved in rows.values():
         
+            left = True
+            mid = True
+            right = True
+
+            for seat in reserved:
+                if 2 <= seat <= 5:
+                    left = False
+
+                if 4 <= seat <= 7:
+                    mid = False
+
+                if 6 <= seat <= 9:
+                    right = False
+                 
+            if left and right:
+                 ans += 2
+            elif left or right or mid:
+                 ans += 1
+             
+        return ans 
