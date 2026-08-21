@@ -1,20 +1,39 @@
 # LeetCode POTD - 2026-08-19
-# 3069. Distribute Elements Into Two Arrays I
-# Approach: Simulation
+# 1386. Cinema Seat Allocation
+# Approach: Hashtable
 
 class Solution:
-    def resultArray(self, nums: List[int]) -> List[int]:
-        n = len(nums)
-        arr1 = []
-        arr2 = []
+    def maxNumberOfFamilies(self, n: int, reservedSeats: List[List[int]]) -> int:
         
-        arr1.append(nums[0])
-        arr2.append(nums[1])
+        rows = {}
+
+        for r, c in reservedSeats:
+            if r not in rows:
+                rows[r] = set()
+
+            rows[r].add(c)
+            
+        ans = (n - len(rows)) * 2
         
-        for i in range(2, n):
-            if arr1[-1] > arr2[-1]:
-                arr1.append(nums[i])
-            else:
-                arr2.append(nums[i])
-                
-        return arr1 + arr2
+        for reserved in rows.values():
+        
+            left = True
+            mid = True
+            right = True
+
+            for seat in reserved:
+                if 2 <= seat <= 5:
+                    left = False
+
+                if 4 <= seat <= 7:
+                    mid = False
+
+                if 6 <= seat <= 9:
+                    right = False
+                 
+            if left and right:
+                 ans += 2
+            elif left or right or mid:
+                 ans += 1
+             
+        return ans 
